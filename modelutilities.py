@@ -380,8 +380,8 @@ def check_swap_request(game_state,swap_request): #M
     
     """IN:Game state and array swap request. OUT:Boolean.
     Returns True if the swap request is legal. False otherwise."""
-
-    if not_on_the_far_right(swap_request[0],game_state):
+    
+    if swap_request != [] and not_on_the_far_right(swap_request[0],game_state):
         column = game_state[swap_request[0]]
         next_column = game_state[swap_request[0] + 1]
         
