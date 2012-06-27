@@ -1,6 +1,6 @@
 These are the files associated with a match three type game of my own design. It's rendering is powered by the Pygame library.
 
-To run the game, download all files into a single folder and run the controller.py file.
+To run the game, have Pygame installed and download all files into a single folder and run the controller.py file.
 
 Thanks for taking a look!
 
