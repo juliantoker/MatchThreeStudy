@@ -43,9 +43,8 @@ class model():
         
                
         self.score += mu.tally_score(self.kill_list)
-        self.GAME_TIME_LENGTH = mu.increase_time(self.kill_list,self.GAME_TIME_LENGTH)
-        self.TIME_BUFFER = mu.update_time(self.TIME_BUFFER)
-        
+        self.GAME_TIME_LENGTH = mu.handle_zone(self.GAME_TIME_LENGTH,swap_list,self.kill_list)
+        #self.TIME_BUFFER,self.GAME_TIME_LENGTH = mu.handle_time_attack(self.TIME_BUFFER,self.GAME_TIME_LENGTH,self.kill_list)
         self.swap_verdict = mu.generate_swap_verdict(self.game_state,swap_request)
         return(self.kill_list,self.swap_verdict,mu.spawn_report,self.MAX_TIME,self.GAME_TIME_LENGTH,self.score)
         

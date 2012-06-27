@@ -1,4 +1,4 @@
-import MatchThreeModel as model, view, pygame
+import MatchThreeModel as model, view, pygame,sys
 from pygame.locals import *
 
 class controller():
@@ -22,6 +22,6 @@ while True:
     
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            
             pygame.quit()
+            sys.exit()
     

@@ -43,6 +43,12 @@ BG_LOC = (BOARD_OFFSET_X,BOARD_OFFSET_Y - (gu.VERTICAL_TILES * Side_Length * (gu
 curtain = pygame.Surface((BG_WIDTH,BOARD_OFFSET_Y - 0.9*BORDER_OFFSET_Y))
 
 Border = Utilities.Load_Image(BOARDER_IMAGE_PATH,Utilities.white) #V
+
+FONT_SIZE = 100
+FONT_POSITION = screen.get_rect().topleft
+FONT_COLOR = Utilities.black
+font = pygame.font.Font(None,FONT_SIZE)
+
 sprites_at_dest = [] #V
 sprites_at_xdest = [] #V
 
@@ -257,7 +263,6 @@ def Draw_Progress_Bar(SURFACE,COLOR,MAX_WIDTH,MAX_QUANTITY,LOAD_QUANTITY,LOCATIO
     pygame.draw.rect(SURFACE,Utilities.white,BORDER_RECT)
     pygame.draw.rect(SURFACE,COLOR,BAR_RECT)
     pygame.draw.rect(SURFACE,BORDER_COLOR,BORDER_RECT,BAR_BORDER_THICKNESS)
-    pygame.display.flip() #You may want to remove this depending on how you're implimenting graphics.
     
 def init_view_spawn(game_state,sprite_array): #V
 
@@ -344,14 +349,27 @@ def hide_buffer(): #V
     curtain.fill(Utilities.white)
     screen.blit(curtain,(BOARD_OFFSET_X,0))
 
-def render(sprite_array): #V
+def draw_score(score): #V
+
+    """IN:Integer score. OUT:Void. Draws the score to the screen."""
+
+    score = str(score)
+
+    text = font.render(score,True,FONT_COLOR)
+    text_rect = text.get_rect()
+    text_rect.topleft = screen.get_rect().topleft
+    screen.blit(text,text_rect)
+    
+    
+def render(sprite_array,score,max_time,game_time): #V
 
     """IN:Sprite tuple. OUT:Void. Carries out all blitting."""
     
     screen.fill(Utilities.white)
+    draw_score(score)
     draw_blocks(sprite_array)
     hide_buffer()
-    #Draw_Progress_Bar(screen,BAR_COLOR,BAR_WIDTH,MAX_TIME,GAME_TIME_LENGTH,(BAR_X,BAR_Y),BAR_HEIGHT) #Be mindful of which variables come from the model.
+    Draw_Progress_Bar(screen,BAR_COLOR,BAR_WIDTH,max_time,game_time,(BAR_X,BAR_Y),BAR_HEIGHT) #Be mindful of which variables come from the model.
     Load_Border()
     pygame.display.flip()
 

@@ -24,8 +24,8 @@ class view():
         vu.remove_tiles(self.kill_list,vu.sprite_array)
         vu.assign_destinations(vu.sprite_array)
         vu.assign_xdest(self.swap_verdict,vu.sprite_array)
-        vu.render(vu.sprite_array)
-
+        vu.render(vu.sprite_array,self.score,self.max_time,self.game_time)
+        
         vu.sprite_array = gu.drop_lowest_to_bottom(vu.sprite_array,vu.sprites_at_dest)
         vu.rectify_sprite_array(vu.sprite_array)
 

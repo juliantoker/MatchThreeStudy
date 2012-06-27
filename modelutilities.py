@@ -4,17 +4,17 @@ from pygame.locals import *
 pygame.init()
 
 SCORE = 0 #M
-GAME_TIME_LENGTH = 120.0 #M
+GAME_TIME_LENGTH = 0 #M
 MAX_TIME = 120.0 #M
 CLOCK = pygame.time.Clock() #M
 TIME_BUFFER = 0 #M
 Kill_List = [] #M
 spawn_report = []
 BLOCK_VALUE = 20 #M
-SECONDS_GAINED = 0.30 #M
+SECONDS_GAINED = 0.60 #M
 TICK_INTERVAL = 1000 #M
 BONUS_OFFSET = 2 #M
-
+progress_decrement = 1
 Game_State = ((gu.EMPTY,) * gu.VERTICAL_TILES * gu.BUFFER_MULT,) * gu.HORIZONTAL_TILES #M
 number_of_sprites_requested = [ gu.EMPTY for i in range(gu.HORIZONTAL_TILES) ]
 
@@ -30,6 +30,19 @@ update_time = lambda TIME_BUFFER: TIME_BUFFER + tick() #M
 report_spawn = lambda spawn_info: spawn_report.append(spawn_info)
 pick_entries = lambda column_index,kill_list: [x for x in kill_list if x[0] == column_index]
 
+def decrement_progress(swap_request,current_progress):
+
+    """IN:Array swap_request and int current_progress. OUT:
+    int new current progress. Decrements current progress
+    every time the player makes a successful swap."""
+
+    if swap_request != []:
+
+        current_progress -= progress_decrement
+        if current_progress < 0:
+            current_progress = 0
+
+    return current_progress
         
 def fill_buffer(Game_State): #M
 
@@ -331,7 +344,7 @@ def check_time(TIME_BUFFER,GAME_TIME): #M
     game time."""
 
     if TIME_BUFFER >= TICK_INTERVAL:
-
+       
        GAME_TIME -= 1
        TIME_BUFFER = 0
 
@@ -355,9 +368,32 @@ def check_game_over(GAME_TIME): #M
 
     if GAME_TIME <= 0:
 
-        running = False
-        pygame.quit() #Replace this with call to view for gameover anim.
+        pass #Replace this with call to view for gameover anim.
 
+def handle_time_attack(time_buffer,game_time,kill_list):
+
+    """IN:Int time_buffer,int game_time,nested array kill_list of all sprites
+    cleared this cycle. OUT:Void. Updates all time parameters for the game."""
+
+    game_time = increase_time(kill_list,game_time)
+    time_buffer = update_time(time_buffer)
+    game_time,time_buffer = check_time(time_buffer,game_time)
+    check_game_over(game_time)
+
+    return time_buffer,game_time
+
+def handle_zone(current_progress,swap_request,kill_list):
+
+    """IN:Int current progress, array swap request/kl. OUT:New current time.
+    Decreases the progress if a successful swap is made and increases
+    progress if matches are made."""
+
+    current_progress = increase_time(kill_list,current_progress)
+    current_progress = decrement_progress(swap_request,current_progress)
+
+    return current_progress
+
+    
 def interpret_input(game_state,player_input): #M
 
     """IN:Nested tule g.s. and player input variable. OUT:Void. Performs
