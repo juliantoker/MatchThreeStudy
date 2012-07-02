@@ -46,7 +46,8 @@ class model():
         self.GAME_TIME_LENGTH = mu.handle_zone(self.GAME_TIME_LENGTH,swap_list,self.kill_list)
         #self.TIME_BUFFER,self.GAME_TIME_LENGTH = mu.handle_time_attack(self.TIME_BUFFER,self.GAME_TIME_LENGTH,self.kill_list)
         self.swap_verdict = mu.generate_swap_verdict(self.game_state,swap_request)
-        return(self.kill_list,self.swap_verdict,mu.spawn_report,self.MAX_TIME,self.GAME_TIME_LENGTH,self.score)
+        
+        return(self.kill_list,self.swap_verdict,mu.spawn_report,self.MAX_TIME,self.GAME_TIME_LENGTH,self.score,mu.quota_array)
         
 
 

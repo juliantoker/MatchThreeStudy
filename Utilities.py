@@ -10,6 +10,7 @@ magenta = (147,112,219) # 243,145,187
 yellow = (255,244,80)
 
 colors = (white,black,blue,green,red,magenta,yellow)
+quota_colors = (black,blue,green,red,magenta,yellow)
 
 def Screen_Init(width,height,background_color):
 

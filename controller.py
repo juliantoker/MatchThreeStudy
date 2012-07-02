@@ -7,7 +7,7 @@ class controller():
 
         self.model = model.model()
         self.view = view.view(self.model.game_state)
-        self.view_output = self.view.update(([],None,[],self.model.MAX_TIME,self.model.GAME_TIME_LENGTH,0))
+        self.view_output = self.view.update(([],None,[],self.model.MAX_TIME,self.model.GAME_TIME_LENGTH,0,[0,0]))
 
     def update(self):
 

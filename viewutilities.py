@@ -1,59 +1,14 @@
-import pygame,random,Utilities,math,mtgeneralutilities as gu
+### Model Imports ###
+
+import pygame,random,Utilities,math,mtgeneralutilities as gu,pdb
 from threading import Timer
 from pygame.locals import *
+from viewconfig import *
+
+### Pygame Initialization ###
+
 pygame.init()
-import pdb
-### Screen Initialization ###
-### V ###
-SCREEN_WIDTH = 1000
-SCREEN_HEIGHT = 900
-screen = pygame.display.set_mode((SCREEN_WIDTH,SCREEN_HEIGHT))
-screen.fill(Utilities.white)
 
-### Game Constants Initialization ###
-
-Block_Group = pygame.sprite.Group() #Delete this once the new graphics are coded.
-BLOCK_SIZE = (74,) * 2 #V
-BLOCK_VELOCITY = 8 #V
-Side_Length = 80 #V
-BLOCK_HALF_LENGTH = Side_Length/2 #V
-COLOR_LOOKUP = dict(zip(range(gu.TILE_VARIETY), Utilities.colors)) #V
-BAR_COLOR = Utilities.red #V
-running = True #Main
-Player_Selections = [] #V
-BOARD_OFFSET_X,BOARD_OFFSET_Y = 450,180 #V
-BOARDER_IMAGE_PATH = 'Border.gif' #V
-BORDER_OFFSET_X,BORDER_OFFSET_Y = 51,46 #V
-BAR_OFFSET_X,BAR_OFFSET_Y = 0,130 #V
-BAR_WIDTH,BAR_HEIGHT = 480,70 #V
-PAUSE_INTERVAL = 1000 #V
-BLOCK_CLEAR_TIME = 0.2 #V
-BAR_BORDER_THICKNESS = 2 #V
-FALL_THRESHOLD = 1 #V
-[COLUMN1_LOCK,COLUMN2_LOCK,COLUMN3_LOCK,COLUMN4_LOCK,COLUMN5_LOCK,COLUMN6_LOCK] = [0] * gu.HORIZONTAL_TILES #V
-locks = [COLUMN1_LOCK,COLUMN2_LOCK,COLUMN3_LOCK,COLUMN4_LOCK,COLUMN5_LOCK,COLUMN6_LOCK] #V
-
-sprite_array = [ [gu.EMPTY] * (gu.VERTICAL_TILES * gu.BUFFER_MULT) for i in range(gu.HORIZONTAL_TILES)] #V
-
-BG_WIDTH,BG_HEIGHT = gu.HORIZONTAL_TILES * Side_Length, gu.BUFFER_MULT * gu.VERTICAL_TILES * Side_Length
-
-background = pygame.Surface((BG_WIDTH,BG_HEIGHT)) #V
-BG_LOC = (BOARD_OFFSET_X,BOARD_OFFSET_Y - (gu.VERTICAL_TILES * Side_Length * (gu.BUFFER_MULT - 1)))
-
-curtain = pygame.Surface((BG_WIDTH,BOARD_OFFSET_Y - 0.9*BORDER_OFFSET_Y))
-
-Border = Utilities.Load_Image(BOARDER_IMAGE_PATH,Utilities.white) #V
-
-FONT_SIZE = 100
-FONT_POSITION = screen.get_rect().topleft
-FONT_COLOR = Utilities.black
-font = pygame.font.Font(None,FONT_SIZE)
-
-sprites_at_dest = [] #V
-sprites_at_xdest = [] #V
-
-pygame.event.set_allowed(None)
-pygame.event.set_allowed(MOUSEBUTTONDOWN)
 ### Lambda Function Declarations ###
 
 Color_Interpreter = lambda x: COLOR_LOOKUP[x] #V
@@ -128,7 +83,7 @@ class NBlock(pygame.sprite.Sprite): #V
         self.color = color
         self.cord = cord
         self.location_tuple = Draw_Location_Selector(self.cord[0],self.cord[1])
-        self.x = self.location_tuple[0] # Could be useful in smooth swaping...
+        self.x = self.location_tuple[0] 
         self.y = self.location_tuple[1]
         self.surface = pygame.Surface(BLOCK_SIZE)
         self.surface.fill(self.color)
@@ -360,8 +315,47 @@ def draw_score(score): #V
     text_rect.topleft = screen.get_rect().topleft
     screen.blit(text,text_rect)
     
+def quota_point_assignment(quota_index):
+
+    quota_x = QUOTA_BLOCK_OFFSET
+    quota_y = QUOTA_BLOCK_OFFSET + (Side_Length * quota_index)
+
+    return (quota_x,quota_y)
+
+def make_quota_block(quota_index):
+
+    color = quota_color_lookup[quota_index]
+    block = pygame.Surface((BLOCK_HALF_LENGTH,BLOCK_HALF_LENGTH))
+    block.fill(color)
+    return block
+
+def render_quota(quota_array):
     
-def render(sprite_array,score,max_time,game_time): #V
+    quota_bg.fill(Utilities.white)
+    
+    for index,color_quota in enumerate(quota_array):
+
+        base_point = quota_point_assignment(index)
+        
+        quota_text = ':' + str(color_quota)
+        text = font.render(quota_text,True,FONT_COLOR)
+        text_rect = text.get_rect()
+
+        block = make_quota_block(index)
+        block_rect = block.get_rect()
+
+        block_rect.center = base_point
+        text_rect.midleft = (base_point[0] + 20,base_point[1])
+
+        quota_bg.blit(text,text_rect)
+        quota_bg.blit(block,block_rect)
+
+    quota_point = Draw_Location_Selector(0,3)
+    quota_x = quota_point[0] + 200
+    quota_y = quota_point[1]
+    screen.blit(quota_bg,(quota_x,quota_y))
+    
+def render(sprite_array,score,max_time,game_time,quota_array): #V
 
     """IN:Sprite tuple. OUT:Void. Carries out all blitting."""
     
@@ -371,6 +365,7 @@ def render(sprite_array,score,max_time,game_time): #V
     hide_buffer()
     Draw_Progress_Bar(screen,BAR_COLOR,BAR_WIDTH,max_time,game_time,(BAR_X,BAR_Y),BAR_HEIGHT) #Be mindful of which variables come from the model.
     Load_Border()
+    render_quota(quota_array)
     pygame.display.flip()
 
 def number_of_empties(cord,column): #V
@@ -468,19 +463,9 @@ def lock_check(selection,lock_array):
         else:
             return []
 
-def render_quota(quota_array):
-    n = 2
-    for color_quota in quota_array:
 
-        quota_text = str(color_quota)
-        text = font.render(quota_text,True,FONT_COLOR)
-        text_pos = text.get_rect(centerx = screen.get_width()/n)
-        screen.blit(text,text_pos)
-        pygame.display.flip()
-        n += 1
+    
         
-        
-
         
 if __name__ == '__main__':
     
@@ -490,8 +475,8 @@ if __name__ == '__main__':
          [(3, 0), 2], [(3, 1), 5], [(3, 2), 1], [(3, 3), 5], [(3, 4), 5],[(3, 5), 6], [(3, 6), 3], [(3, 7), 2],
          [(4, 0), 1], [(4, 1), 2],[(4, 2), 6], [(4, 3), 3], [(4, 4), 2], [(4, 5), 2], [(4, 6), 1],[(4, 7), 1],
          [(5, 0), 2], [(5, 1), 2], [(5, 2), 4], [(5, 3), 2],[(5, 4), 4], [(5, 5), 1], [(5, 6), 1], [(5, 7), 3]]
-
-    A = [10,39,55,3]
+    
+    A = [100,39,55,3]
     render_quota(A)
     
 

@@ -18,13 +18,8 @@ progress_decrement = 1
 Game_State = ((gu.EMPTY,) * gu.VERTICAL_TILES * gu.BUFFER_MULT,) * gu.HORIZONTAL_TILES #M
 number_of_sprites_requested = [ gu.EMPTY for i in range(gu.HORIZONTAL_TILES) ]
 
-BLACK_QUOTA = 0
-BLUE_QUOTA = 0
-GREEN_QUOTA = 0
-RED_QUOTA = 0
-MAGENTA_QUOTA = 0
-YELLOW_QUOTA = 0
-quota_array = [0,BLACK_QUOTA,BLUE_QUOTA,GREEN_QUOTA,RED_QUOTA,MAGENTA_QUOTA,YELLOW_QUOTA]
+BLACK_QUOTA = BLUE_QUOTA = GREEN_QUOTA = RED_QUOTA = MAGENTA_QUOTA = YELLOW_QUOTA = 60
+quota_array = [BLACK_QUOTA,BLUE_QUOTA,GREEN_QUOTA,RED_QUOTA,MAGENTA_QUOTA,YELLOW_QUOTA]
 
 tick = lambda: CLOCK.tick() #M
 random_color = lambda: random.choice(range(1,gu.TILE_VARIETY)) #M
@@ -282,8 +277,10 @@ def find_matches(Game_State): #M
 def decrement_quota(killed_color):
 
     """IN: The color of a matched block. OUT:Void.
-    Decrements the appropriate entry of the quota array."""
+    Decrements the appropriate entry of the quota array.
+    Called within the destroy_matches function."""
 
+    killed_color -= 1
     quota_array[killed_color] -= 1
     if quota_array[killed_color] < 0:
         quota_array[killed_color] = 0
@@ -523,7 +520,9 @@ def lower_spawn_points(drop_list,number_of_sprites_requested):
             
 
     
+if __name__ == '__main__':
 
+    pass
 
 
 

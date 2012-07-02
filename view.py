@@ -17,6 +17,7 @@ class view():
         self.max_time = model_input_tuple[3]
         self.game_time = model_input_tuple[4]
         self.score = model_input_tuple[5]
+        self.quota_array = model_input_tuple[6]
         
         vu.engage_locks(self.kill_list)
         
@@ -24,7 +25,8 @@ class view():
         vu.remove_tiles(self.kill_list,vu.sprite_array)
         vu.assign_destinations(vu.sprite_array)
         vu.assign_xdest(self.swap_verdict,vu.sprite_array)
-        vu.render(vu.sprite_array,self.score,self.max_time,self.game_time)
+        
+        vu.render(vu.sprite_array,self.score,self.max_time,self.game_time,self.quota_array)
         
         vu.sprite_array = gu.drop_lowest_to_bottom(vu.sprite_array,vu.sprites_at_dest)
         vu.rectify_sprite_array(vu.sprite_array)
