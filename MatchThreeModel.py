@@ -13,7 +13,8 @@ class model():
         self.GAME_TIME_LENGTH = mu.GAME_TIME_LENGTH
         self.TIME_BUFFER = mu.TIME_BUFFER
         self.score = 0
-       
+        
+        
     def update(self,view_input_tuple):
 
         """IN:Player input constant, nested drop_list array
@@ -40,7 +41,6 @@ class model():
         #self.game_state = mu.spawn_blocks(self.game_state) #Move to after 
         
         self.game_state = mu.improved_swap_blocks(self.game_state,swap_list)
-        
                
         self.score += mu.tally_score(self.kill_list)
         self.GAME_TIME_LENGTH = mu.handle_zone(self.GAME_TIME_LENGTH,swap_list,self.kill_list)

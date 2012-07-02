@@ -18,6 +18,14 @@ progress_decrement = 1
 Game_State = ((gu.EMPTY,) * gu.VERTICAL_TILES * gu.BUFFER_MULT,) * gu.HORIZONTAL_TILES #M
 number_of_sprites_requested = [ gu.EMPTY for i in range(gu.HORIZONTAL_TILES) ]
 
+BLACK_QUOTA = 0
+BLUE_QUOTA = 0
+GREEN_QUOTA = 0
+RED_QUOTA = 0
+MAGENTA_QUOTA = 0
+YELLOW_QUOTA = 0
+quota_array = [0,BLACK_QUOTA,BLUE_QUOTA,GREEN_QUOTA,RED_QUOTA,MAGENTA_QUOTA,YELLOW_QUOTA]
+
 tick = lambda: CLOCK.tick() #M
 random_color = lambda: random.choice(range(1,gu.TILE_VARIETY)) #M
 not_on_the_far_right = lambda x_selection,Game_State: x_selection != gu.HORIZONTAL_TILES - 1 #M
@@ -271,6 +279,14 @@ def find_matches(Game_State): #M
     
     return find_row_matches(Game_State) + find_column_matches(Game_State)
 
+def decrement_quota(killed_color):
+
+    """IN: The color of a matched block. OUT:Void.
+    Decrements the appropriate entry of the quota array."""
+
+    quota_array[killed_color] -= 1
+    if quota_array[killed_color] < 0:
+        quota_array[killed_color] = 0
     
 def destroy_matches(Game_State,Kill_List): #M
 
@@ -281,7 +297,8 @@ def destroy_matches(Game_State,Kill_List): #M
     Game_State = gu.Tuple_To_Array(Game_State)
 
     for kill_index in Kill_List:
-
+        killed_color = Game_State[kill_index[0]][kill_index[1]]
+        decrement_quota(killed_color)
         Game_State[kill_index[0]][kill_index[1]] = gu.EMPTY
 
     Game_State = gu.Array_To_Tuple(Game_State)
