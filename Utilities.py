@@ -12,6 +12,21 @@ yellow = (255,244,80)
 colors = (white,black,blue,green,red,magenta,yellow)
 quota_colors = (black,blue,green,red,magenta,yellow)
 
+def all_indices(value, qlist):
+
+    """IN:Value,Iterable. OUT:The indicies of all occurences
+    of value in qlist."""
+    
+    indices = []
+    idx = -1
+    while True:
+        try:
+            idx = qlist.index(value, idx+1)
+            indices.append(idx)
+        except ValueError:
+            break
+    return indices
+
 def Screen_Init(width,height,background_color):
 
     """Initializes a screen of the given dimensions with the specified background color."""

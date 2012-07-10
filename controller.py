@@ -14,6 +14,7 @@ class controller():
        self.model_output = self.model.update(self.view_output)
        self.view_output = self.view.update(self.model_output)
 
+
 k = controller()
 
 while True:

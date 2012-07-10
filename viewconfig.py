@@ -12,6 +12,25 @@ screen.fill(Utilities.white)
 
 ### Game Constants Initialization ###
 
+black_block = Utilities.Load_Image('black_block.png',Utilities.white)
+blue_block = Utilities.Load_Image('blue_block.png',Utilities.white)
+green_block = Utilities.Load_Image('green_block.png',Utilities.white)
+red_block = Utilities.Load_Image('red_block.png',Utilities.white)
+magenta_block = Utilities.Load_Image('magenta_block.png',Utilities.white)
+yellow_block = Utilities.Load_Image('yellow_block.png',Utilities.white)
+
+small_black_block = Utilities.Load_Image('small_black_block.png',Utilities.white)
+small_blue_block = Utilities.Load_Image('small_blue_block.png',Utilities.white)
+small_green_block = Utilities.Load_Image('small_green_block.png',Utilities.white)
+small_red_block = Utilities.Load_Image('small_red_block.png',Utilities.white)
+small_magenta_block = Utilities.Load_Image('small_magenta_block.png',Utilities.white)
+small_yellow_block = Utilities.Load_Image('small_yellow_block.png',Utilities.white)
+
+block_sprite_dict = {Utilities.black:black_block,Utilities.blue:blue_block,Utilities.green:green_block,Utilities.red:red_block,Utilities.magenta:magenta_block,Utilities.yellow:yellow_block}
+
+small_block_sprite_array = [small_black_block,small_blue_block,small_green_block,
+                            small_red_block,small_magenta_block,small_yellow_block]
+
 Block_Group = pygame.sprite.Group() #Delete this once the new graphics are coded.
 BLOCK_SIZE = (74,) * 2 #V
 BLOCK_VELOCITY = 8 #V

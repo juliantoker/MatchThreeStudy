@@ -4,7 +4,7 @@ from pygame.locals import *
 pygame.init()
 
 SCORE = 0 #M
-GAME_TIME_LENGTH = 0 #M
+GAME_TIME_LENGTH = 120 #M
 MAX_TIME = 120.0 #M
 CLOCK = pygame.time.Clock() #M
 TIME_BUFFER = 0 #M
@@ -17,8 +17,9 @@ BONUS_OFFSET = 2 #M
 progress_decrement = 1
 Game_State = ((gu.EMPTY,) * gu.VERTICAL_TILES * gu.BUFFER_MULT,) * gu.HORIZONTAL_TILES #M
 number_of_sprites_requested = [ gu.EMPTY for i in range(gu.HORIZONTAL_TILES) ]
-
-BLACK_QUOTA = BLUE_QUOTA = GREEN_QUOTA = RED_QUOTA = MAGENTA_QUOTA = YELLOW_QUOTA = 60
+level = 1
+combo_number = 0
+BLACK_QUOTA = BLUE_QUOTA = GREEN_QUOTA = RED_QUOTA = MAGENTA_QUOTA = YELLOW_QUOTA = 5
 quota_array = [BLACK_QUOTA,BLUE_QUOTA,GREEN_QUOTA,RED_QUOTA,MAGENTA_QUOTA,YELLOW_QUOTA]
 
 tick = lambda: CLOCK.tick() #M
@@ -518,8 +519,73 @@ def lower_spawn_points(drop_list,number_of_sprites_requested):
         if number_of_sprites_requested[cord[0]] < 0:
             number_of_sprites_requested[cord[0]] = 0
             
+def check_for_level_up(quota_array):
 
+    found_nonempty = True
     
+    for quota in quota_array:
+        
+        if quota != 0:
+            found_nonempty = False
+            break
+    else:
+
+        return found_nonempty
+
+def update_quota_array(level):
+
+    new_quota = 10 * level
+    return [ new_quota for i in range(6)]
+        
+def try_level_up(quota_array,level):
+    
+    if check_for_level_up(quota_array):
+        
+        level += 1
+        new_quota_array = update_quota_array(level)
+        return new_quota_array,level
+    else:
+        return quota_array,level
+
+def check_color(array,color,match_number = 3):
+
+    enough_of_color = False
+    number_of_color = array.count(color)
+    if number_of_color >= match_number:
+        enough_of_color = True
+    return enough_of_color
+
+def board_full(game_state):
+    
+    outcome = True
+    
+    for cord in gu.Two_D_Nested_Iter(game_state): #NEEDS TO ONLY ITERATE OVER THE GS, NOT THE BUFFER AS WELL.
+
+        if cord[1] >= gu.TOP_PLAY_ROW:
+            entry = game_state[cord[0]][cord[1]]
+            if entry == gu.EMPTY:
+                
+                outcome = False
+                break
+    
+    return outcome
+
+def determine_combo(kill_list,swap_request,combo_number,game_state):
+
+    """IN:Nested kill_list array and array player input. OUT:Void
+    if no combo is made. Int combo number upon finishing a combo."""
+
+    if kill_list != []:
+
+        combo_number += 1
+        
+    elif board_full(game_state):
+        
+        combo_number = 0
+        
+    return combo_number
+
+                                       
 if __name__ == '__main__':
 
     pass

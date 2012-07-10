@@ -87,6 +87,7 @@ class NBlock(pygame.sprite.Sprite): #V
         self.y = self.location_tuple[1]
         self.surface = pygame.Surface(BLOCK_SIZE)
         self.surface.fill(self.color)
+        self.surface = block_sprite_dict[self.color]
         self.dest = self.y
         self.xdest = self.x
         self.at_dest = False
@@ -327,6 +328,7 @@ def make_quota_block(quota_index):
     color = quota_color_lookup[quota_index]
     block = pygame.Surface((BLOCK_HALF_LENGTH,BLOCK_HALF_LENGTH))
     block.fill(color)
+    block = small_block_sprite_array[quota_index]
     return block
 
 def render_quota(quota_array):
@@ -463,7 +465,9 @@ def lock_check(selection,lock_array):
         else:
             return []
 
+def check_combo(combo_number):
 
+    pass
     
         
         
