@@ -84,9 +84,7 @@ class NBlock(pygame.sprite.Sprite): #V
         self.cord = cord
         self.location_tuple = Draw_Location_Selector(self.cord[0],self.cord[1])
         self.x = self.location_tuple[0] 
-        self.y = self.location_tuple[1]
-        self.surface = pygame.Surface(BLOCK_SIZE)
-        self.surface.fill(self.color)
+        self.y = self.location_tuple[1]   
         self.surface = block_sprite_dict[self.color]
         self.dest = self.y
         self.xdest = self.x
@@ -98,40 +96,45 @@ class NBlock(pygame.sprite.Sprite): #V
 
         """IN: Integer dest that specifies the desired
         screen location of the sprite."""
-
     
         distance_from_destination = abs(self.y - self.dest)
         xdistance_from_destination = abs(self.x - self.xdest)
         if locks[self.cord[0]] == 0:
             if distance_from_destination > FALL_THRESHOLD:
+
+                self.surface = surprised_sprite_dict[self.color]
                 self.yinit_flag = False
                 self.y += BLOCK_VELOCITY
                 
             elif xdistance_from_destination > FALL_THRESHOLD:
                 self.init_flag = False
+                   
                 if self.x > self.xdest: #I.e block is being shifted left.
 
-                    self.x -= BLOCK_VELOCITY
+                    self.x -= SWAP_VELOCITY
                     
                 elif self.x < self.xdest: #I.e block is being shifted right.
 
-                    self.x += BLOCK_VELOCITY
+                    self.x += SWAP_VELOCITY
 
             elif xdistance_from_destination <= FALL_THRESHOLD and not self.init_flag:
 
+    
                 self.x = self.xdest
                 self.init_flag = True
                 report_at_xdest(self.cord)
 
             elif distance_from_destination <= FALL_THRESHOLD and not self.yinit_flag:
 
+                self.surface = block_sprite_dict[self.color]
                 self.y = self.dest
                 report_at_dest(self.cord)
                 
             else:
                 pass
-
-        background.blit(self.surface,(self.x,self.y))
+        
+        if self.y >= Draw_Location_Selector(0,gu.TOP_PLAY_ROW)[1] - 40:
+            background.blit(self.surface,(self.x,self.y))
 
 def add_sprites(spawn_tuple,sprite_array): #V
 
@@ -208,6 +211,14 @@ def Load_Border(): #V
     NEW_LOCATION = (X,Y)
     screen.blit(Border,NEW_LOCATION)
 
+def draw_bg_mask():
+
+    ROUGH_LOCATION = Location_Selector(0,gu.VERTICAL_TILES * (gu.BUFFER_MULT - 1))
+    X = ROUGH_LOCATION[0] - BORDER_OFFSET_X + 40 
+    Y = ROUGH_LOCATION[1] - BORDER_OFFSET_Y + 40
+    NEW_LOCATION = (X,Y)
+    screen.blit(bg_mask,NEW_LOCATION)
+    
 def Draw_Progress_Bar(SURFACE,COLOR,MAX_WIDTH,MAX_QUANTITY,LOAD_QUANTITY,LOCATION,HEIGHT,BORDER_COLOR = (0,0,0)): #V
 
     PROGRESS = LOAD_QUANTITY/MAX_QUANTITY
@@ -253,7 +264,7 @@ def draw_blocks(sprite_array): #V
     background.fill(Utilities.white)
 
     update_sprites(sprite_array)
-
+    draw_bg_mask()
     screen.blit(background,BG_LOC)
 
 def not_moving_check(block_selection,sprite_array): #V
@@ -362,6 +373,8 @@ def render(sprite_array,score,max_time,game_time,quota_array): #V
     """IN:Sprite tuple. OUT:Void. Carries out all blitting."""
     
     screen.fill(Utilities.white)
+    screen.blit(bg_sprite, (0,0))
+    background = bg_sprite
     draw_score(score)
     draw_blocks(sprite_array)
     hide_buffer()
@@ -467,21 +480,13 @@ def lock_check(selection,lock_array):
 
 def check_combo(combo_number):
 
-    pass
-    
-        
-        
+    if combo_number == last_combo_number:
+
+        pass
+            
 if __name__ == '__main__':
     
-    B = [[(0, 0), 2], [(0, 1), 4], [(0, 2), 1], [(0, 3), 5], [(0, 4), 1], [(0, 5), 6],[(0, 6), 5], [(0, 7), 5],
-         [(1, 0), 6], [(1, 1), 3],[(1, 2), 1], [(1, 3), 6], [(1, 4), 1], [(1, 5), 2],[(1, 6), 1], [(1, 7), 3],
-         [(2, 0), 2], [(2, 1), 5], [(2, 2), 5],[(2, 3), 6], [(2, 4), 4], [(2, 5), 5], [(2, 6), 4], [(2, 7), 3],
-         [(3, 0), 2], [(3, 1), 5], [(3, 2), 1], [(3, 3), 5], [(3, 4), 5],[(3, 5), 6], [(3, 6), 3], [(3, 7), 2],
-         [(4, 0), 1], [(4, 1), 2],[(4, 2), 6], [(4, 3), 3], [(4, 4), 2], [(4, 5), 2], [(4, 6), 1],[(4, 7), 1],
-         [(5, 0), 2], [(5, 1), 2], [(5, 2), 4], [(5, 3), 2],[(5, 4), 4], [(5, 5), 1], [(5, 6), 1], [(5, 7), 3]]
-    
-    A = [100,39,55,3]
-    render_quota(A)
+    pass
     
 
     

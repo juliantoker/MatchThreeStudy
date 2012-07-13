@@ -38,8 +38,7 @@ class model():
            
         self.game_state = mu.improved_swap_blocks(self.game_state,swap_list)
         self.combo_number = mu.determine_combo(self.kill_list,swap_request,self.combo_number,self.game_state)
-        if self.combo_number != 0:
-            print self.combo_number
+        
         self.score += mu.tally_score(self.kill_list)
         #self.GAME_TIME_LENGTH = mu.handle_zone(self.GAME_TIME_LENGTH,swap_list,self.kill_list)
         self.TIME_BUFFER,self.GAME_TIME_LENGTH = mu.handle_time_attack(self.TIME_BUFFER,self.GAME_TIME_LENGTH,self.kill_list)
