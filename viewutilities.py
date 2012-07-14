@@ -230,6 +230,7 @@ def Draw_Progress_Bar(SURFACE,COLOR,MAX_WIDTH,MAX_QUANTITY,LOAD_QUANTITY,LOCATIO
     pygame.draw.rect(SURFACE,Utilities.white,BORDER_RECT)
     pygame.draw.rect(SURFACE,COLOR,BAR_RECT)
     pygame.draw.rect(SURFACE,BORDER_COLOR,BORDER_RECT,BAR_BORDER_THICKNESS)
+    screen.blit(clock,(BAR_X - 74,BAR_Y))
     
 def init_view_spawn(game_state,sprite_array): #V
 
@@ -330,7 +331,7 @@ def draw_score(score): #V
 def quota_point_assignment(quota_index):
 
     quota_x = QUOTA_BLOCK_OFFSET
-    quota_y = QUOTA_BLOCK_OFFSET + (Side_Length * quota_index)
+    quota_y = QUOTA_BLOCK_OFFSET + (Side_Length * quota_index) + 20
 
     return (quota_x,quota_y)
 
@@ -345,6 +346,7 @@ def make_quota_block(quota_index):
 def render_quota(quota_array):
     
     quota_bg.fill(Utilities.white)
+    quota_bg.blit(quota_outline,(0,0))
     
     for index,color_quota in enumerate(quota_array):
 
@@ -363,8 +365,8 @@ def render_quota(quota_array):
         quota_bg.blit(text,text_rect)
         quota_bg.blit(block,block_rect)
 
-    quota_point = Draw_Location_Selector(0,3)
-    quota_x = quota_point[0] + 200
+    quota_point = Draw_Location_Selector(0,2)
+    quota_x = quota_point[0] + 100
     quota_y = quota_point[1]
     screen.blit(quota_bg,(quota_x,quota_y))
     

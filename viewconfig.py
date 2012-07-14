@@ -13,6 +13,8 @@ screen.fill(Utilities.white)
 ### Importing Sprites ###
 
 bg_sprite = Utilities.Load_Image('background.png',Utilities.white)
+quota_outline = Utilities.Load_Image('quota_outline.png',Utilities.white)
+clock = Utilities.Load_Image('clock.png',Utilities.white)
 
 black_block = Utilities.Load_Image('black_block.png',Utilities.white)
 blue_block = Utilities.Load_Image('blue_block.png',Utilities.white)
@@ -62,7 +64,7 @@ dead_sprites = []
 BOARD_OFFSET_X,BOARD_OFFSET_Y = 450,180 #V
 BOARDER_IMAGE_PATH = 'Border.gif' #V
 BORDER_OFFSET_X,BORDER_OFFSET_Y = 51,46 #V
-BAR_OFFSET_X,BAR_OFFSET_Y = 0,130 #V
+BAR_OFFSET_X,BAR_OFFSET_Y = -35,130 #V
 BAR_WIDTH,BAR_HEIGHT = 480,70 #V
 PAUSE_INTERVAL = 1000 #V
 BLOCK_CLEAR_TIME = 0.2 #V
@@ -71,8 +73,8 @@ FALL_THRESHOLD = 1 #V
 ALPHA_THRESHOLD = 0
 [COLUMN1_LOCK,COLUMN2_LOCK,COLUMN3_LOCK,COLUMN4_LOCK,COLUMN5_LOCK,COLUMN6_LOCK] = [0] * gu.HORIZONTAL_TILES #V
 locks = [COLUMN1_LOCK,COLUMN2_LOCK,COLUMN3_LOCK,COLUMN4_LOCK,COLUMN5_LOCK,COLUMN6_LOCK] #V
-QUOTA_BG_WIDTH,QUOTA_BG_HEIGHT = 200,480
-QUOTA_BLOCK_OFFSET = 40
+QUOTA_BG_WIDTH,QUOTA_BG_HEIGHT = 300,700
+QUOTA_BLOCK_OFFSET = 120
 sprite_array = [ [gu.EMPTY] * (gu.VERTICAL_TILES * gu.BUFFER_MULT) for i in range(gu.HORIZONTAL_TILES)] #V
 sprites_at_dest = [] #V
 sprites_at_xdest = [] #V
@@ -85,16 +87,20 @@ BG_LOC = (BOARD_OFFSET_X,BOARD_OFFSET_Y - (gu.VERTICAL_TILES * Side_Length * (gu
 
 background = pygame.Surface((BG_WIDTH,BG_HEIGHT)) #V
 background.set_colorkey(Utilities.white)
+background = background.convert()
 
 bg_mask = pygame.Surface((500,660))
 bg_mask.fill(Utilities.black)
 bg_mask.set_alpha(100)
 bg_mask = bg_mask.convert_alpha()
+
 quota_bg = pygame.Surface((QUOTA_BG_WIDTH,QUOTA_BG_HEIGHT))
 quota_bg.set_colorkey(Utilities.white)
+quota_bg = quota_bg.convert()
 
 curtain = pygame.Surface((BG_WIDTH,BOARD_OFFSET_Y - 0.9*BORDER_OFFSET_Y))
 curtain.set_colorkey(Utilities.white)
+curtain = curtain.convert()
 
 Border = Utilities.Load_Image(BOARDER_IMAGE_PATH,Utilities.white) #V
 Border = Border.convert_alpha()
