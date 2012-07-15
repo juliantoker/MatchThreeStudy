@@ -6,7 +6,7 @@ pygame.init()
 ### Screen Initialization ###
 
 SCREEN_WIDTH = 1000
-SCREEN_HEIGHT = 900
+SCREEN_HEIGHT = 1000
 screen = pygame.display.set_mode((SCREEN_WIDTH,SCREEN_HEIGHT),DOUBLEBUF)
 screen.fill(Utilities.white)
 
@@ -16,26 +16,26 @@ bg_sprite = Utilities.Load_Image('background.png',Utilities.white)
 quota_outline = Utilities.Load_Image('quota_outline.png',Utilities.white)
 clock = Utilities.Load_Image('clock.png',Utilities.white)
 
-black_block = Utilities.Load_Image('black_block.png',Utilities.white)
-blue_block = Utilities.Load_Image('blue_block.png',Utilities.white)
-green_block = Utilities.Load_Image('green_block.png',Utilities.white)
-red_block = Utilities.Load_Image('red_block.png',Utilities.white)
-magenta_block = Utilities.Load_Image('magenta_block.png',Utilities.white)
-yellow_block = Utilities.Load_Image('yellow_block.png',Utilities.white)
+black_block = Utilities.Load_Image('black_block.png')
+blue_block = Utilities.Load_Image('blue_block.png')
+green_block = Utilities.Load_Image('green_block.png')
+red_block = Utilities.Load_Image('red_block.png')
+magenta_block = Utilities.Load_Image('magenta_block.png')
+yellow_block = Utilities.Load_Image('yellow_block.png')
 
-small_black_block = Utilities.Load_Image('small_black_block.png',Utilities.white)
-small_blue_block = Utilities.Load_Image('small_blue_block.png',Utilities.white)
-small_green_block = Utilities.Load_Image('small_green_block.png',Utilities.white)
-small_red_block = Utilities.Load_Image('small_red_block.png',Utilities.white)
-small_magenta_block = Utilities.Load_Image('small_magenta_block.png',Utilities.white)
-small_yellow_block = Utilities.Load_Image('small_yellow_block.png',Utilities.white)
+small_black_block = Utilities.Load_Image('small_black_block.png')
+small_blue_block = Utilities.Load_Image('small_blue_block.png')
+small_green_block = Utilities.Load_Image('small_green_block.png')
+small_red_block = Utilities.Load_Image('small_red_block.png')
+small_magenta_block = Utilities.Load_Image('small_magenta_block.png')
+small_yellow_block = Utilities.Load_Image('small_yellow_block.png')
 
-black_block_surprised = Utilities.Load_Image('black_block_surprised.png',Utilities.white)
-blue_block_surprised = Utilities.Load_Image('blue_block_surprised.png',Utilities.white)
-green_block_surprised = Utilities.Load_Image('green_block_surprised.png',Utilities.white)
-red_block_surprised = Utilities.Load_Image('red_block_surprised.png',Utilities.white)
-magenta_block_surprised = Utilities.Load_Image('magenta_block_surprised.png',Utilities.white)
-yellow_block_surprised = Utilities.Load_Image('yellow_block_surprised.png',Utilities.white)
+black_block_surprised = Utilities.Load_Image('black_block_surprised.png')
+blue_block_surprised = Utilities.Load_Image('blue_block_surprised.png')
+green_block_surprised = Utilities.Load_Image('green_block_surprised.png')
+red_block_surprised = Utilities.Load_Image('red_block_surprised.png')
+magenta_block_surprised = Utilities.Load_Image('magenta_block_surprised.png')
+yellow_block_surprised = Utilities.Load_Image('yellow_block_surprised.png')
 
 block_sprite_dict = {Utilities.black:black_block,Utilities.blue:blue_block,Utilities.green:green_block,Utilities.red:red_block,Utilities.magenta:magenta_block,Utilities.yellow:yellow_block}
 
@@ -51,8 +51,8 @@ surprised_sprite_dict = {Utilities.black:black_block_surprised,Utilities.blue:bl
 last_combo_number = 0
 Block_Group = pygame.sprite.Group() #Delete this once the new graphics are coded.
 BLOCK_SIZE = (74,) * 2 #V
-BLOCK_VELOCITY = 8 #V
-SWAP_VELOCITY = 8
+BLOCK_VELOCITY = 10 #V
+SWAP_VELOCITY = 10
 Side_Length = 80 #V
 BLOCK_HALF_LENGTH = Side_Length/2 #V
 COLOR_LOOKUP = dict(zip(range(gu.TILE_VARIETY), Utilities.colors)) #V
