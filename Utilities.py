@@ -72,13 +72,53 @@ def Load_Image(Name, Color_Key = None):
 
     Image = Image.convert()
 
+##    if Color_Key == -1:
+##
+##        Color_Key = Image.get_at((0,0))
+##
+##    Image.set_colorkey(Color_Key, RLEACCEL)
+    
+    return Image
+
+def memoize(func):
+    memo = dict()
+    def memo_func(args):
+        if args in memo:
+            return memo[args]
+        else:
+            memo[args] = func(args)
+            return memo[args]
+        
+
+@memoize
+def load_image(name, color_key=None):
+
+    """Loads an image file of the passed
+    in Name value from the 'data' sub-
+    directory. If the Color_Key argument
+    is -1, the top left pixel will be
+    used for transparency purposes."""
+
+    Full_Name = os.path.join('data',Name)
+
+    try:
+
+        Image = pygame.image.load(Full_Name)
+
+    except pygame.error, message:
+
+        print 'Cannot load image:',Name
+        raise SystemExit,message
+
+    Image = Image.convert()
+
     if Color_Key == -1:
 
         Color_Key = Image.get_at((0,0))
 
     Image.set_colorkey(Color_Key, RLEACCEL)
 
-    return Image
+    return Image 
 
 
 def Load_Sound(Name):
