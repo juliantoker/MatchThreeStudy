@@ -4,6 +4,7 @@ import Utilities
 import math
 import mtgeneralutilities as gu
 import os
+import re
 from threading import Timer
 from pygame.locals import *
 from viewconfig import *
@@ -72,7 +73,7 @@ curtain = pygame.Surface((BG_WIDTH,BOARD_OFFSET_Y - 0.9*BORDER_OFFSET_Y))
 curtain.set_colorkey(Utilities.white)
 curtain = curtain.convert()
 
-Border = Utilities.loadImage(BOARDER_IMAGE_PATH,Utilities.white) #V
+Border = Utilities.loadImage(BOARDER_IMAGE_PATH,Utilities.white)
 Border = Border.convert_alpha()
 
 # load sprites

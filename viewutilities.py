@@ -343,13 +343,14 @@ def make_quota_block(quota_index):
     block = small_block_sprite_array[quota_index]
     return block
 
+# quota array is passed in by the model
 def render_quota(quota_array):
     
     quota_bg.fill(Utilities.white)
     quota_bg.blit(quota_outline,(0,0))
     
     for index,color_quota in enumerate(quota_array):
-
+        # optimize this using @memoize
         base_point = quota_point_assignment(index)
         
         quota_text = ':' + str(color_quota)

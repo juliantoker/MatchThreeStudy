@@ -11,10 +11,10 @@ blue = (58,167,255)
 magenta = (147,112,219) # 243,145,187
 yellow = (255,244,80)
 
-color_list = [white,black,blue,green,red,magenta,yellow]
-color_tuple = (white,black,blue,green,red,magenta,yellow)
+color_list = [white,black,blue,green,magenta,red,yellow]
+color_tuple = (white,black,blue,green,magenta,red,yellow)
 color_dict = {'white':white,'black':black,'blue':blue,'green':green,
-              'red':red,'magenta':magenta,'yellow':yellow}
+              'magenta':magenta,'red':red,'yellow':yellow}
 
 # memoizer decorator
 def memoize(obj):
@@ -143,6 +143,7 @@ def main():
     files = ['png','gif']
     fileNames = getFilenames(directory,files)
     for fileName in fileNames:
+        print fileName
         loadImage(fileName)
     pygame.quit()
     os._exit(1)
