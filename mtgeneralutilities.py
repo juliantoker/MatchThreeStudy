@@ -7,7 +7,7 @@ VERTICAL_TILES = 8
 BUFFER_MULT = 2 
 TOP_PLAY_ROW = VERTICAL_TILES * (BUFFER_MULT - 1) 
 
-TILE_VARIETY = len(Utilities.colors) 
+TILE_VARIETY = len(Utilities.color_tuple) 
 
 Array_Index = lambda Array: xrange(len(Array)) 
 Array_To_Tuple = lambda Array: tuple([tuple(Array[column_index]) for column_index in Array_Index(Array)]) 

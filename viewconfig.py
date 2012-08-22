@@ -18,8 +18,8 @@ BLOCK_VELOCITY = 10
 SWAP_VELOCITY = 10
 SIDE_LENGTH = 80 
 BLOCK_HALF_LENGTH = SIDE_LENGTH/2 
-colorLookUp = dict(zip(range(gu.TILE_VARIETY), Utilities.colors)) 
-quotaLookUp = dict(zip(range(gu.TILE_VARIETY),Utilities.quota_colors))
+colorLookUp = dict(zip(range(gu.TILE_VARIETY), Utilities.color_tuple)) 
+quotaLookUp = dict(zip(range(gu.TILE_VARIETY),Utilities.color_tuple[1:]))
 barColor = Utilities.red 
 running = True 
 BOARD_OFFSET_X,BOARD_OFFSET_Y = 450,180 
@@ -52,41 +52,6 @@ pygame.event.set_allowed(None)
 pygame.event.set_allowed(MOUSEBUTTONDOWN)
 pygame.event.set_allowed(QUIT)
 
-# load sprites
-backgroundSprite = Utilities.Load_Image('background.png',Utilities.white)
-quotaOutline = Utilities.Load_Image('quotaOutline.png',Utilities.white)
-clock = Utilities.Load_Image('clock.png',Utilities.white)
-
-black_block = Utilities.Load_Image('black_block.png')
-blue_block = Utilities.Load_Image('blue_block.png')
-green_block = Utilities.Load_Image('green_block.png')
-red_block = Utilities.Load_Image('red_block.png')
-magenta_block = Utilities.Load_Image('magenta_block.png')
-yellow_block = Utilities.Load_Image('yellow_block.png')
-
-small_black_block = Utilities.Load_Image('small_black_block.png')
-small_blue_block = Utilities.Load_Image('small_blue_block.png')
-small_green_block = Utilities.Load_Image('small_green_block.png')
-small_red_block = Utilities.Load_Image('small_red_block.png')
-small_magenta_block = Utilities.Load_Image('small_magenta_block.png')
-small_yellow_block = Utilities.Load_Image('small_yellow_block.png')
-
-black_block_surprised = Utilities.Load_Image('black_block_surprised.png')
-blue_block_surprised = Utilities.Load_Image('blue_block_surprised.png')
-green_block_surprised = Utilities.Load_Image('green_block_surprised.png')
-red_block_surprised = Utilities.Load_Image('red_block_surprised.png')
-magenta_block_surprised = Utilities.Load_Image('magenta_block_surprised.png')
-yellow_block_surprised = Utilities.Load_Image('yellow_block_surprised.png')
-
-spriteDict = {Utilities.black:black_block,Utilities.blue:blue_block,Utilities.green:green_block,Utilities.red:red_block,Utilities.magenta:magenta_block,Utilities.yellow:yellow_block}
-
-smallSpriteList = [small_black_block,small_blue_block,small_green_block,
-                            small_red_block,small_magenta_block,small_yellow_block]
-
-surprisedSpriteDict = {Utilities.black:black_block_surprised,Utilities.blue:blue_block_surprised,
-                       Utilities.green:green_block_surprised,Utilities.red:red_block_surprised,
-                       Utilities.magenta:magenta_block_surprised,Utilities.yellow:yellow_block_surprised}
-
 # define pygame surfaces
 screen = pygame.display.set_mode((SCREEN_WIDTH,SCREEN_HEIGHT),DOUBLEBUF)
 screen.fill(Utilities.white)
@@ -107,8 +72,43 @@ curtain = pygame.Surface((BG_WIDTH,BOARD_OFFSET_Y - 0.9*BORDER_OFFSET_Y))
 curtain.set_colorkey(Utilities.white)
 curtain = curtain.convert()
 
-Border = Utilities.Load_Image(BOARDER_IMAGE_PATH,Utilities.white) #V
+Border = Utilities.loadImage(BOARDER_IMAGE_PATH,Utilities.white) #V
 Border = Border.convert_alpha()
+
+# load sprites
+backgroundSprite = Utilities.loadImage('background.png',Utilities.white)
+quotaOutline = Utilities.loadImage('quotaOutline.png',Utilities.white)
+clock = Utilities.loadImage('clock.png',Utilities.white)
+
+black_block = Utilities.loadImage('black_block.png')
+blue_block = Utilities.loadImage('blue_block.png')
+green_block = Utilities.loadImage('green_block.png')
+red_block = Utilities.loadImage('red_block.png')
+magenta_block = Utilities.loadImage('magenta_block.png')
+yellow_block = Utilities.loadImage('yellow_block.png')
+
+small_black_block = Utilities.loadImage('small_black_block.png')
+small_blue_block = Utilities.loadImage('small_blue_block.png')
+small_green_block = Utilities.loadImage('small_green_block.png')
+small_red_block = Utilities.loadImage('small_red_block.png')
+small_magenta_block = Utilities.loadImage('small_magenta_block.png')
+small_yellow_block = Utilities.loadImage('small_yellow_block.png')
+
+black_block_surprised = Utilities.loadImage('black_block_surprised.png')
+blue_block_surprised = Utilities.loadImage('blue_block_surprised.png')
+green_block_surprised = Utilities.loadImage('green_block_surprised.png')
+red_block_surprised = Utilities.loadImage('red_block_surprised.png')
+magenta_block_surprised = Utilities.loadImage('magenta_block_surprised.png')
+yellow_block_surprised = Utilities.loadImage('yellow_block_surprised.png')
+
+spriteDict = {Utilities.black:black_block,Utilities.blue:blue_block,Utilities.green:green_block,Utilities.red:red_block,Utilities.magenta:magenta_block,Utilities.yellow:yellow_block}
+
+smallSpriteList = [small_black_block,small_blue_block,small_green_block,
+                            small_red_block,small_magenta_block,small_yellow_block]
+
+surprisedSpriteDict = {Utilities.black:black_block_surprised,Utilities.blue:blue_block_surprised,
+                       Utilities.green:green_block_surprised,Utilities.red:red_block_surprised,
+                       Utilities.magenta:magenta_block_surprised,Utilities.yellow:yellow_block_surprised}
 
 ### Fonts ###
 
