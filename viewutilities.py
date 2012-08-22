@@ -11,10 +11,10 @@ pygame.init()
 
 ### Lambda Function Declarations ###
 
-Color_Interpreter = lambda x: COLOR_LOOKUP[x] #V
+Color_Interpreter = lambda x: colorLookUp[x] #V
 One_To_The_Right = lambda Block_Selection: (Block_Selection[0] + 1, Block_Selection[1]) #V
-report_at_dest = lambda cord_array: sprites_at_dest.append(cord_array) #V
-report_at_xdest = lambda cord_array: sprites_at_xdest.append(cord_array) #V
+report_at_dest = lambda cord_array: spritesAtYDest.append(cord_array) #V
+report_at_xdest = lambda cord_array: spritesAtXDest.append(cord_array) #V
 
 ### Game Function Declarations ###
 
@@ -23,8 +23,8 @@ def Location_Selector(Row_Index,Column_Index): #V
     """Determines each block's appropriate screen location
     given its row and column indicies as well as its side length"""
     
-    X_Coordinate =  BOARD_OFFSET_X + (Row_Index * Side_Length) 
-    Y_Coordinate =  BOARD_OFFSET_Y + Side_Length * (Column_Index - gu.VERTICAL_TILES * (gu.BUFFER_MULT - 1))
+    X_Coordinate =  BOARD_OFFSET_X + (Row_Index * SIDE_LENGTH) 
+    Y_Coordinate =  BOARD_OFFSET_Y + SIDE_LENGTH * (Column_Index - gu.VERTICAL_TILES * (gu.BUFFER_MULT - 1))
 
     return (X_Coordinate,Y_Coordinate)
 
@@ -36,8 +36,8 @@ def Draw_Location_Selector(Row_Index,Column_Index): #V
     """Determines each block's appropriate screen location
     given its row and column indicies as well as its side length"""
     
-    X_Coordinate =  (Row_Index * Side_Length) 
-    Y_Coordinate =  (Column_Index * Side_Length) 
+    X_Coordinate =  (Row_Index * SIDE_LENGTH) 
+    Y_Coordinate =  (Column_Index * SIDE_LENGTH) 
 
     return (X_Coordinate,Y_Coordinate)
 
@@ -68,7 +68,7 @@ class Block(pygame.sprite.Sprite): #V
         self.surface = pygame.Surface(BLOCK_SIZE)
         self.surface.fill(self.color)
         self.position = location
-        Block_Group.add(self)
+        blockGroup.add(self)
         background.blit(self.surface,self.position)
 
 class NBlock(pygame.sprite.Sprite): #V
@@ -85,7 +85,7 @@ class NBlock(pygame.sprite.Sprite): #V
         self.location_tuple = Draw_Location_Selector(self.cord[0],self.cord[1])
         self.x = self.location_tuple[0] 
         self.y = self.location_tuple[1]   
-        self.surface = block_sprite_dict[self.color]
+        self.surface = spriteDict[self.color]
         self.dest = self.y
         self.xdest = self.x
         self.at_dest = False
@@ -126,7 +126,7 @@ class NBlock(pygame.sprite.Sprite): #V
 
             elif distance_from_destination <= FALL_THRESHOLD and not self.yinit_flag:
 
-                self.surface = block_sprite_dict[self.color]
+                self.surface = spriteDict[self.color]
                 self.y = self.dest
                 report_at_dest(self.cord)
                 
@@ -136,17 +136,17 @@ class NBlock(pygame.sprite.Sprite): #V
         if self.y >= Draw_Location_Selector(0,gu.TOP_PLAY_ROW)[1] - 40:
             background.blit(self.surface,(self.x,self.y))
 
-def add_sprites(spawn_tuple,sprite_array): #V
+def add_sprites(spawn_tuple,spriteList): #V
 
     """IN:Nested spawn tuple from the model specifying where the new sprites should be instantiated
     within the sprite array and the nested sprite array. spawn_tuple[0] = cord spawn_tuple[1] = RGB
-    Instantiates sprites in the sprite_array where the spawn_tuple specifies."""
+    Instantiates sprites in the spriteList where the spawn_tuple specifies."""
     
     for entry in spawn_tuple:
         
         cord = entry[0]
         color = Color_Interpreter(entry[1])
-        sprite_array[cord[0]][cord[1]] = NBlock(cord,color)
+        spriteList[cord[0]][cord[1]] = NBlock(cord,color)
         
 	    		
 def Draw_Blocks(Game_State): #V #OBSOLETE: DOES NOT DRAW THE BLOCKS!!!
@@ -170,13 +170,13 @@ def Draw_Blocks(Game_State): #V #OBSOLETE: DOES NOT DRAW THE BLOCKS!!!
         screen.blit(background,BG_LOC)
         pygame.display.flip()
 
-def Center_Position(Position,Side_Length = 80): #V
+def Center_Position(Position,SIDE_LENGTH = 80): #V
 
     """Transforms the upper-left corner block positions
     into center positions used for mouse collision
     detection."""
 
-    Half_Length = Side_Length/2
+    Half_Length = SIDE_LENGTH/2
     New_X = Position[0] + Half_Length
     New_Y = Position[1] + Half_Length
     
@@ -232,7 +232,7 @@ def Draw_Progress_Bar(SURFACE,COLOR,MAX_WIDTH,MAX_QUANTITY,LOAD_QUANTITY,LOCATIO
     pygame.draw.rect(SURFACE,BORDER_COLOR,BORDER_RECT,BAR_BORDER_THICKNESS)
     screen.blit(clock,(BAR_X - 74,BAR_Y))
     
-def init_view_spawn(game_state,sprite_array): #V
+def init_view_spawn(game_state,spriteList): #V
 
     """IN: G.S. OUT: Sprite tuple. Spawns NBlock objects in the buffer area
     of a a sprite tuple to match the passed in g.s."""
@@ -240,42 +240,42 @@ def init_view_spawn(game_state,sprite_array): #V
     for CORD in gu.Two_D_Nested_Iter(game_state):
     
         color = Color_Interpreter(game_state[CORD[0]][CORD[1]])
-        sprite_array[CORD[0]][CORD[1]] = NBlock((CORD[0],CORD[1]),color)
+        spriteList[CORD[0]][CORD[1]] = NBlock((CORD[0],CORD[1]),color)
 
     else:
         
-        return sprite_array
+        return spriteList
 
-def update_sprites(sprite_array): #V
+def update_sprites(spriteList): #V
 
     """IN:Sprite tuple. OUT:Void. Each element's
     update() called ."""
        
-    for cord in gu.Two_D_Nested_Iter(sprite_array):
-        entry = sprite_array[cord[0]][cord[1]]
+    for cord in gu.Two_D_Nested_Iter(spriteList):
+        entry = spriteList[cord[0]][cord[1]]
         if entry != gu.EMPTY:
             
             entry.update() 
 
-def draw_blocks(sprite_array): #V
+def draw_blocks(spriteList): #V
 
     """IN:Sprite tuple. Updates and renders the sprites
     within the passed in sprite tuple."""
     
     background.fill(Utilities.white)
 
-    update_sprites(sprite_array)
+    update_sprites(spriteList)
     draw_bg_mask()
     screen.blit(background,BG_LOC)
 
-def not_moving_check(block_selection,sprite_array): #V
+def not_moving_check(block_selection,spriteList): #V
 
     """IN:[i,j] sprite array coordinate list and sprite array.
     OUT: Boolean. Returns True of the sprite in the [i,j]
     position's init_flag flag is True and False otherwise."""
     
     if block_selection[0] < gu.HORIZONTAL_TILES:
-        checked_entry = sprite_array[block_selection[0]][block_selection[1]]
+        checked_entry = spriteList[block_selection[0]][block_selection[1]]
         if  type(checked_entry) is not int and checked_entry.init_flag:
             return True
         else:
@@ -283,17 +283,17 @@ def not_moving_check(block_selection,sprite_array): #V
     else:
         return False
     
-def generate_swap_request(event,sprite_array): #V
+def generate_swap_request(event,spriteList): #V
 
     """IN:Sprite array. OUT:Nested array swap request."""
     for ev in event:
         if ev.type == pygame.MOUSEBUTTONDOWN:
             (mouse_x,mouse_y) = pygame.mouse.get_pos()
-            selection = Mouse_Select(sprite_array,mouse_x,mouse_y)
+            selection = Mouse_Select(spriteList,mouse_x,mouse_y)
             if selection != None:
                 right_neighbor = [selection[0] + 1,selection[1]]
-                if  right_neighbor != None and not_moving_check(selection,sprite_array) and not_moving_check(right_neighbor,sprite_array):
-                    #print selection,sprite_array[selection[0]][selection[1]].color
+                if  right_neighbor != None and not_moving_check(selection,spriteList) and not_moving_check(right_neighbor,spriteList):
+                    #print selection,spriteList[selection[0]][selection[1]].color
                     return selection
         else:
             
@@ -303,12 +303,12 @@ def process_other_input(event):
 
     return None #Have a dict lookup for each event type.
 
-def check_for_input(sprite_array): #V
+def check_for_input(spriteList): #V
 
     """IN:game state tuple. OUT:Tuple of Swap request and other input(A,B)."""
 
     event = pygame.event.get()
-    return (generate_swap_request(event,sprite_array),process_other_input(event))
+    return (generate_swap_request(event,spriteList),process_other_input(event))
 
 def hide_buffer(): #V
 
@@ -331,13 +331,13 @@ def draw_score(score): #V
 def quota_point_assignment(quota_index):
 
     quota_x = QUOTA_BLOCK_OFFSET
-    quota_y = QUOTA_BLOCK_OFFSET + (Side_Length * quota_index) + 20
+    quota_y = QUOTA_BLOCK_OFFSET + (SIDE_LENGTH * quota_index) + 20
 
     return (quota_x,quota_y)
 
 def make_quota_block(quota_index):
 
-    color = quota_color_lookup[quota_index]
+    color = quotaLookUp[quota_index]
     block = pygame.Surface((BLOCK_HALF_LENGTH,BLOCK_HALF_LENGTH))
     block.fill(color)
     block = small_block_sprite_array[quota_index]
@@ -370,7 +370,7 @@ def render_quota(quota_array):
     quota_y = quota_point[1]
     screen.blit(quota_bg,(quota_x,quota_y))
     
-def render(sprite_array,score,max_time,game_time,quota_array): #V
+def render(spriteList,score,max_time,game_time,quota_array): #V
 
     """IN:Sprite tuple. OUT:Void. Carries out all blitting."""
     
@@ -378,9 +378,9 @@ def render(sprite_array,score,max_time,game_time,quota_array): #V
     screen.blit(bg_sprite, (0,0))
     background = bg_sprite
     draw_score(score)
-    draw_blocks(sprite_array)
+    draw_blocks(spriteList)
     hide_buffer()
-    Draw_Progress_Bar(screen,BAR_COLOR,BAR_WIDTH,max_time,game_time,(BAR_X,BAR_Y),BAR_HEIGHT) #Be mindful of which variables come from the model.
+    Draw_Progress_Bar(screen,barColor,BAR_WIDTH,max_time,game_time,(BAR_X,BAR_Y),BAR_HEIGHT) #Be mindful of which variables come from the model.
     Load_Border()
     render_quota(quota_array)
     pygame.display.flip()
@@ -400,14 +400,14 @@ def number_of_empties(cord,column): #V
 
         return empty_number
 
-def assign_destinations(sprite_array): #V
+def assign_destinations(spriteList): #V
 
     """IN:Nested sprite array. OUT:Void. Updates the dest parameter for each sprite(NBlocks)
     within the nested sprite tuple."""
 
-    for column_index in gu.Array_Index(sprite_array):
+    for column_index in gu.Array_Index(spriteList):
 
-        column = sprite_array[column_index]
+        column = spriteList[column_index]
         lowest_empty_cord = gu.lowest_empty(column)
         
         
@@ -417,7 +417,7 @@ def assign_destinations(sprite_array): #V
             if sprite != gu.EMPTY:
                 if lowest_empty_cord != None:
                     empties = number_of_empties(row_index,column)
-                    dest_increase = empties * Side_Length #How far the sprite must fall.
+                    dest_increase = empties * SIDE_LENGTH #How far the sprite must fall.
                     coordinate_location = Draw_Location_Selector(sprite.cord[0],sprite.cord[1])[1]
                     new_dest = coordinate_location + dest_increase
                     sprite.dest = new_dest
@@ -426,7 +426,7 @@ def assign_destinations(sprite_array): #V
                         sprite.dest = sprite.y - 1 # THIS IS CAUSING AN ERROR.
                     
 
-def remove_tiles(kill_list,sprite_array): #V
+def remove_tiles(kill_list,spriteList): #V
 
     """IN:Kill list passed in by the model via the controller
     and the sprite array. Removes sprites in the cords specified
@@ -436,17 +436,17 @@ def remove_tiles(kill_list,sprite_array): #V
 
         x = cord[0]
         y = cord[1]
-        sprite_array[x][y] = gu.EMPTY #Make sure pygame's garbage collection removes the replaced sprite.
+        spriteList[x][y] = gu.EMPTY #Make sure pygame's garbage collection removes the replaced sprite.
 
-def assign_xdest(swap_verdict,sprite_array): #V
+def assign_xdest(swap_verdict,spriteList): #V
 
     """IN:Array what block should be swapped with its right neighbor, sprite array.
     OUT:Void. The specified coordinate and its right neighbor will have
     appropriate xdest params set."""
     if swap_verdict != None:
         
-        sprite = sprite_array[swap_verdict[0]][swap_verdict[1]]
-        next_sprite = sprite_array[swap_verdict[0] + 1][swap_verdict[1]]
+        sprite = spriteList[swap_verdict[0]][swap_verdict[1]]
+        next_sprite = spriteList[swap_verdict[0] + 1][swap_verdict[1]]
         
         sprite_x = sprite.x
         next_x = next_sprite.x
@@ -454,17 +454,17 @@ def assign_xdest(swap_verdict,sprite_array): #V
         sprite.xdest = next_x
         next_sprite.xdest = sprite_x
 
-        sprite_array[swap_verdict[0]][swap_verdict[1]] = next_sprite
-        sprite_array[swap_verdict[0] + 1][swap_verdict[1]] = sprite
+        spriteList[swap_verdict[0]][swap_verdict[1]] = next_sprite
+        spriteList[swap_verdict[0] + 1][swap_verdict[1]] = sprite
         
-def rectify_sprite_array(sprite_array): #V
+def rectify_sprite_array(spriteList): #V
     
     """IN:Sprite array. Makes the sprites' cord attribute
     match their position within the passed in sprite array."""
     
-    for cord in reversed(gu.Two_D_Nested_Iter(sprite_array)):
+    for cord in reversed(gu.Two_D_Nested_Iter(spriteList)):
 
-        sprite = sprite_array[cord[0]][cord[1]]
+        sprite = spriteList[cord[0]][cord[1]]
         if sprite != gu.EMPTY:
             sprite.cord = cord
                             
@@ -482,7 +482,7 @@ def lock_check(selection,lock_array):
 
 def check_combo(combo_number):
 
-    if combo_number == last_combo_number:
+    if combo_number == lastComboNumber:
 
         pass
             

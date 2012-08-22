@@ -1,26 +1,26 @@
 import Utilities
 
-EMPTY = 0 #M&V
+EMPTY = 0 
 
-HORIZONTAL_TILES = 6 #M&V
-VERTICAL_TILES = 8 #M&V
-BUFFER_MULT = 2 #M&V
-TOP_PLAY_ROW = VERTICAL_TILES * (BUFFER_MULT - 1) #M&V 
+HORIZONTAL_TILES = 6 
+VERTICAL_TILES = 8 
+BUFFER_MULT = 2 
+TOP_PLAY_ROW = VERTICAL_TILES * (BUFFER_MULT - 1) 
 
-TILE_VARIETY = len(Utilities.colors) #M&V
+TILE_VARIETY = len(Utilities.colors) 
 
-Array_Index = lambda Array: xrange(len(Array)) #M&V
-Array_To_Tuple = lambda Array: tuple([tuple(Array[column_index]) for column_index in Array_Index(Array)]) #M&V
-Tuple_To_Array = lambda Tuple: [list(Tuple[column_index]) for column_index in Array_Index(Tuple)] #M&V
+Array_Index = lambda Array: xrange(len(Array)) 
+Array_To_Tuple = lambda Array: tuple([tuple(Array[column_index]) for column_index in Array_Index(Array)]) 
+Tuple_To_Array = lambda Tuple: [list(Tuple[column_index]) for column_index in Array_Index(Tuple)] 
 game_buffer = [buffer_entry for buffer_entry in reversed(xrange(TOP_PLAY_ROW))]
 
-def Two_D_Nested_Iter(Nested_Array): #M&V
+def Two_D_Nested_Iter(Nested_Array): 
 
     """IN:2D Array. OUT:Nested tuple containing the coordinates of all simple entries in the 2D nested array."""
 
     return [[i,j] for i in Array_Index(Nested_Array) for j in Array_Index(Nested_Array[i])]
 
-def lowest_empty(column): #M&V
+def lowest_empty(column): 
 
     """IN: Column aray. OUT: Int. Returns
     the location of the lowest white space in the
@@ -35,9 +35,9 @@ def lowest_empty(column): #M&V
 
     else:
 
-        return None #Just an arbitrary small number.
+        return None 
 
-def strip_zeroes(column): #M&V
+def strip_zeroes(column): 
 
     """IN:Column. OUT: A column with all zeroes stripped off."""
 
@@ -49,7 +49,7 @@ def strip_zeroes(column): #M&V
 
         return column
 
-def drop_lowest_to_bottom(game_state,drop_list): # M&V
+def drop_lowest_to_bottom(game_state,drop_list): 
 
     """IN:Nested tuple or array g.s and nested tuple drop list.
     OUT: New game state.Moves game state entries
@@ -61,7 +61,7 @@ def drop_lowest_to_bottom(game_state,drop_list): # M&V
         game_state = Tuple_To_Array(game_state)
         tuple_flag = 1
         
-    for cord in reversed(drop_list): #Reversed so bottoms are dropped first.
+    for cord in reversed(drop_list): 
         
         empty = lowest_empty(game_state[cord[0]])
         if empty != None and empty > cord[1]:
@@ -77,7 +77,7 @@ def drop_lowest_to_bottom(game_state,drop_list): # M&V
 
             return game_state
 
-def Nested_List_Reverse(Nested_Array): #M&V
+def Nested_List_Reverse(Nested_Array): 
 
     """IN:Nested array. OUT:Nested array. Reverses the nested elements of each array element within a 2-dimensional array"""
 
@@ -92,7 +92,7 @@ def Nested_List_Reverse(Nested_Array): #M&V
 
         return Inverted_Array
 
-def Column_Clear(Game_State,Coordinate): #M&V
+def Column_Clear(Game_State,Coordinate): 
 
     """IN: 2D nested Game_State tuple and coordinate tuple. Returns True if there are
     no empty spaces in the passed in coordinate's column. Returns False if there
@@ -123,7 +123,7 @@ def compress_column(column):
         entry = column[i]
         lil_empty = lowest_empty(column)
         
-        if entry != EMPTY and i != bottom_entry: #The "and" used to be an "or."
+        if entry != EMPTY and i != bottom_entry: 
 
             column[lil_empty] = column[i]
             column[i] = EMPTY
@@ -131,3 +131,18 @@ def compress_column(column):
 
         return column
 
+if __name__ == '__main__':
+    import ConfigParser as cp
+    parser = cp.ConfigParser()
+    parser.read('config.ini')
+    print parser.get('pygame','screenWidth')
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
