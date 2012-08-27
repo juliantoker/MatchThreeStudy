@@ -102,7 +102,7 @@ class NBlock(pygame.sprite.Sprite): #V
         if locks[self.cord[0]] == 0:
             if distance_from_destination > FALL_THRESHOLD:
 
-                self.surface = surprised_sprite_dict[self.color]
+                self.surface = surprisedSpriteDict[self.color]
                 self.yinit_flag = False
                 self.y += BLOCK_VELOCITY
                 
@@ -211,13 +211,13 @@ def Load_Border(): #V
     NEW_LOCATION = (X,Y)
     screen.blit(Border,NEW_LOCATION)
 
-def draw_bg_mask():
+def draw_backgroundMask():
 
     ROUGH_LOCATION = Location_Selector(0,gu.VERTICAL_TILES * (gu.BUFFER_MULT - 1))
     X = ROUGH_LOCATION[0] - BORDER_OFFSET_X + 40 
     Y = ROUGH_LOCATION[1] - BORDER_OFFSET_Y + 40
     NEW_LOCATION = (X,Y)
-    screen.blit(bg_mask,NEW_LOCATION)
+    screen.blit(backgroundMask,NEW_LOCATION)
     
 def Draw_Progress_Bar(SURFACE,COLOR,MAX_WIDTH,MAX_QUANTITY,LOAD_QUANTITY,LOCATION,HEIGHT,BORDER_COLOR = (0,0,0)): #V
 
@@ -265,7 +265,7 @@ def draw_blocks(spriteList): #V
     background.fill(Utilities.white)
 
     update_sprites(spriteList)
-    draw_bg_mask()
+    draw_backgroundMask()
     screen.blit(background,BG_LOC)
 
 def not_moving_check(block_selection,spriteList): #V
@@ -340,14 +340,14 @@ def make_quota_block(quota_index):
     color = quotaLookUp[quota_index]
     block = pygame.Surface((BLOCK_HALF_LENGTH,BLOCK_HALF_LENGTH))
     block.fill(color)
-    block = small_block_sprite_array[quota_index]
+    block = smallSpriteList[quota_index]
     return block
 
 # quota array is passed in by the model
 def render_quota(quota_array):
     
     quota_bg.fill(Utilities.white)
-    quota_bg.blit(quota_outline,(0,0))
+    quota_bg.blit(quotaOutline,(0,0))
     
     for index,color_quota in enumerate(quota_array):
         # optimize this using @memoize
@@ -376,8 +376,8 @@ def render(spriteList,score,max_time,game_time,quota_array): #V
     """IN:Sprite tuple. OUT:Void. Carries out all blitting."""
     
     screen.fill(Utilities.white)
-    screen.blit(bg_sprite, (0,0))
-    background = bg_sprite
+    screen.blit(backgroundSprite, (0,0))
+    background = backgroundSprite
     draw_score(score)
     draw_blocks(spriteList)
     hide_buffer()

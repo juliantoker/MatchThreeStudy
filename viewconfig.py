@@ -78,7 +78,7 @@ Border = Border.convert_alpha()
 
 # load sprites
 backgroundSprite = Utilities.loadImage('background.png',Utilities.white)
-quotaOutline = Utilities.loadImage('quotaOutline.png',Utilities.white)
+quotaOutline = Utilities.loadImage('quota_outline.png',Utilities.white)
 clock = Utilities.loadImage('clock.png',Utilities.white)
 
 black_block = Utilities.loadImage('black_block.png')

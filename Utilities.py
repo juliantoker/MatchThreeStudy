@@ -92,7 +92,7 @@ def testShell():
             # terminates all active threads
             os._exit(1)
             
-@memoize            
+#@memoize            
 def loadImage(name, colorKey = None):
     """IN: String, optional Int. OUT: Pygame surface.
     Loads an image file of the passed
@@ -100,9 +100,11 @@ def loadImage(name, colorKey = None):
     directory. If the colorKey argument
     is -1, the top left pixel will be
     used for transparency purposes."""
-        
+    print name
+    fullName = os.path.join('data',name)  
+    print fullName  
     try:
-        image = pygame.image.load(name)
+        image = pygame.image.load(fullName)
     except pygame.error, message:
         print 'Cannot load image:',name
         raise SystemExit,message
